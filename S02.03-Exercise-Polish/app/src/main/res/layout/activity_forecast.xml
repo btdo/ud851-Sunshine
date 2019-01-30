@@ -29,6 +29,13 @@
             android:padding="16dp"
             android:textSize="20sp" />
     </ScrollView>
+    <TextView
+        android:id="@+id/error_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:text="@string/error_message"
+        android:visibility="invisible"/>
+
 
     <!--TODO (2) Add a TextView that you will show the user if there is an error loading content-->
     <!--TODO (3) Make the width and the height wrap_content-->
@@ -39,5 +46,12 @@
     <!--TODO (13) Make the width and height of the ProgressBar 42dp-->
     <!--TODO (14) Set the layout_gravity of the ProgressBar to center-->
     <!--TODO (15) Set the default visibility of the ProgressBar to invisible-->
+
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_gravity="center"
+        android:visibility="invisible"/>
 
 </FrameLayout>
