@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         mErrorMsg = (TextView) findViewById(R.id.error_message);
 
         // TODO (17) Find the ProgressBar using findViewById
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        progressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
         /* Once all of our views are setup, we can load the weather data. */
         loadWeatherData();

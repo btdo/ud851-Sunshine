@@ -47,11 +47,11 @@
     <!--TODO (14) Set the layout_gravity of the ProgressBar to center-->
     <!--TODO (15) Set the default visibility of the ProgressBar to invisible-->
 
-    <android.support.v4.widget.ContentLoadingProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="42dp"
+    <ProgressBar
+        android:id="@+id/pb_loading_indicator"
         android:layout_height="42dp"
+        android:layout_width="42dp"
         android:layout_gravity="center"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
 </FrameLayout>
