@@ -222,7 +222,23 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapterOn
         }
 
         // TODO (2) Launch the map when the map menu item is clicked
+        if (id == R.id.open_map) {
+            openLocationMap();
+
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    void openLocationMap(){
+        String address = "615 Sheraton Rd, Burlington, ON, CA";
+        Uri geoLocation = Uri.parse("geo:0,0?q=" + address);
+
+        Intent intent =  new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+
+        if (intent.resolveActivity(getPackageManager()) != null){
+            startActivity(intent);
+        }
     }
 }
