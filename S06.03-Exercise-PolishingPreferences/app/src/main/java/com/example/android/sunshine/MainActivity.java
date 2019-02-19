@@ -283,7 +283,10 @@ public class MainActivity extends AppCompatActivity implements
      */
     private void openLocationInMap() {
         // TODO (9) Use preferred location rather than a default location to display in the map
-        String addressString = "1600 Ampitheatre Parkway, CA";
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String keyForLocation = getString(R.string.pref_location_key);
+        String defaultLocation =getString(R.string.pref_location_default);
+        String addressString = prefs.getString(keyForLocation,defaultLocation);
         Uri geoLocation = Uri.parse("geo:0,0?q=" + addressString);
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -341,6 +344,22 @@ public class MainActivity extends AppCompatActivity implements
 
 
     // TODO (7) In onStart, if preferences have been changed, refresh the data and set the flag to false
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (preferenceUpdate){
+            invalidateData();
+            getSupportLoaderManager().restartLoader(FORECAST_LOADER_ID, null, this);
+            preferenceUpdate = false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+    }
 
     // TODO (8) Override onDestroy and unregister MainActivity as a SharedPreferenceChangedListener
 
