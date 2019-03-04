@@ -16,6 +16,7 @@
 package com.example.android.sunshine;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +30,9 @@ import android.widget.TextView;
 class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapterViewHolder> {
 
     //  TODO (14) Remove the mWeatherData declaration and the setWeatherData method
-    private String[] mWeatherData;
+
     //  TODO (1) Declare a private final Context field called mContext
+    private final Context mContext;
 
     /*
      * Below, we've defined an interface to handle clicks on items within this Adapter. In the
@@ -47,7 +49,8 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
         void onClick(String weatherForDay);
     }
 
-//  TODO (2) Declare a private Cursor field called mCursor
+    //  TODO (2) Declare a private Cursor field called mCursor
+    private Cursor mCursor;
 //  TODO (3) Add a Context field to the constructor and store that context in mContext
 
     /**
@@ -56,7 +59,8 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
      * @param clickHandler The on-click handler for this adapter. This single handler is called
      *                     when an item is clicked.
      */
-    public ForecastAdapter(ForecastAdapterOnClickHandler clickHandler) {
+    public ForecastAdapter(Context context, ForecastAdapterOnClickHandler clickHandler) {
+        mContext = context;
         mClickHandler = clickHandler;
     }
 
@@ -96,9 +100,17 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
 //      TODO (5) Delete the current body of onBindViewHolder
 //      TODO (6) Move the cursor to the appropriate position
 //      TODO (7) Generate a weather summary with the date, description, high and low
-        String weatherForThisDay = mWeatherData[position];
+        //String weatherForThisDay = mWeatherData[position];
+        mCursor.moveToPosition(position);
+        String dateString = mCursor.getString(MainActivity.INDEX_WEATHER_DATE);
+        String description = mCursor.getString(MainActivity.INDEX_WEATHER_CONDITION_ID);
+        double highInCelsius = mCursor.getDouble(MainActivity.INDEX_WEATHER_MAX_TEMP);
+        double lowInCelsius = mCursor.getDouble(MainActivity.INDEX_WEATHER_MIN_TEMP);
+        String weatherSummary = dateString + " - " + description + " - " + highInCelsius + "-" + lowInCelsius;
 //      TODO (8) Display the summary that you created above
-        forecastAdapterViewHolder.weatherSummary.setText(weatherForThisDay);
+        forecastAdapterViewHolder.weatherSummary.setText(weatherSummary);
+
+
     }
 
     /**
@@ -111,24 +123,17 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
     public int getItemCount() {
 //      TODO (9) Delete the current body of getItemCount
 //      TODO (10) If mCursor is null, return 0. Otherwise, return the count of mCursor
-        if (null == mWeatherData) return 0;
-        return mWeatherData.length;
+        if (null == mCursor) return 0;
+        return mCursor.getCount();
     }
 
-    /**
-     * This method is used to set the weather forecast on a ForecastAdapter if we've already
-     * created one. This is handy when we get new data from the web but don't want to create a
-     * new ForecastAdapter to display it.
-     *
-     * @param weatherData The new weather data to be displayed.
-     */
-    public void setWeatherData(String[] weatherData) {
-        mWeatherData = weatherData;
+    //  TODO (11) Create a new method that allows you to swap Cursors.
+//      TODO (12) After the new Cursor is set, call notifyDataSetChanged
+    void swapCursor(Cursor newCursor) {
+        mCursor = newCursor;
+        // After the new Cursor is set, call notifyDataSetChanged
         notifyDataSetChanged();
     }
-
-//  TODO (11) Create a new method that allows you to swap Cursors.
-//      TODO (12) After the new Cursor is set, call notifyDataSetChanged
 
     /**
      * A ViewHolder is a required part of the pattern for RecyclerViews. It mostly behaves as
@@ -152,9 +157,7 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
         @Override
         public void onClick(View v) {
             //  TODO (13) Instead of passing the String from the data array, use the weatherSummary text!
-            int adapterPosition = getAdapterPosition();
-            String weatherForDay = mWeatherData[adapterPosition];
-            mClickHandler.onClick(weatherForDay);
+            mClickHandler.onClick(weatherSummary.getText().toString());
         }
     }
 }
