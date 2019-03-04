@@ -17,12 +17,35 @@ package com.example.android.sunshine.sync;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+
+import com.example.android.sunshine.data.WeatherContract;
 
 
 public class SunshineSyncUtils {
 
 //  TODO (1) Declare a private static boolean field called sInitialized
+    private static boolean sInitialized;
+
+    public static synchronized void initialize (Context context) {
+        if (sInitialized) return;
+
+        sInitialized = true;
+        new AsyncTask<Void,Void,Void>(){
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                Uri forecastQueryUri = WeatherContract.WeatherEntry.CONTENT_URI;
+
+
+                return null;
+            }
+        };
+        startImmediateSync(context);
+
+    }
 
     //  TODO (2) Create a synchronized public static void method called initialize
     //  TODO (3) Only execute this method body if sInitialized is false
