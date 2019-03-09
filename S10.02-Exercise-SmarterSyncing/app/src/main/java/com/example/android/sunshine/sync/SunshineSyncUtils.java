@@ -17,6 +17,8 @@ package com.example.android.sunshine.sync;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
@@ -28,7 +30,7 @@ public class SunshineSyncUtils {
 //  TODO (1) Declare a private static boolean field called sInitialized
     private static boolean sInitialized;
 
-    public static synchronized void initialize (Context context) {
+    public static synchronized void initialize (final Context context) {
         if (sInitialized) return;
 
         sInitialized = true;
@@ -38,12 +40,26 @@ public class SunshineSyncUtils {
             protected Void doInBackground(Void... voids) {
 
                 Uri forecastQueryUri = WeatherContract.WeatherEntry.CONTENT_URI;
+                String[] projectionColumns = {WeatherContract.WeatherEntry._ID};
+                String selectionStatement = WeatherContract.WeatherEntry
+                        .getSqlSelectForTodayOnwards();
 
+                /* Here, we perform the query to check to see if we have any weather data */
+                Cursor cursor = context.getContentResolver().query(
+                        forecastQueryUri,
+                        projectionColumns,
+                        selectionStatement,
+                        null,
+                        null);
+                if (null == cursor || cursor.getCount() == 0) {
+                    startImmediateSync(context);
+                }
 
+                /* Make sure to close the Cursor to avoid memory leaks! */
+                cursor.close();
                 return null;
             }
-        };
-        startImmediateSync(context);
+        }.execute();
 
     }
 

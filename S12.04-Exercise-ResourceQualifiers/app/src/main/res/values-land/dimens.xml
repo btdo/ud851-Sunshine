@@ -15,8 +15,12 @@
      limitations under the License.
 -->
 
+<!-- TODO (1) Create the version of dimens that will be used in landscape mode -->
+<!-- TODO (2) Create the version of dimens that will be used when the smallest width of the screen is 600dp -->
+
 <resources>
-    <bool name="show_notifications_by_default">true</bool>
-    <bool name="use_today_layout">false</bool>
-    <!-- TODO (3) Add a bool called use_today_layout and set it to false -->
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="forecast_detail_horizontal_padding">16dp</dimen>
+    <dimen name="forecast_detail_vertical_padding">44dp</dimen>
+
 </resources>
